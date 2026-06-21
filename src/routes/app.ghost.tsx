@@ -1,129 +1,119 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Ghost, CheckCircle2, ExternalLink } from "lucide-react";
+import { Ghost, Link as LinkIcon, Play, Tag, CheckCircle2 } from "lucide-react";
 import { PageHeader } from "@/components/app-shell";
 
 export const Route = createFileRoute("/app/ghost")({
-  head: () => ({ meta: [{ title: "Ghost Monitor — Alpha Engine" }] }),
+  head: () => ({ meta: [{ title: "Monitor Fantasma — Alpha Engine" }] }),
   component: Page,
 });
 
-const PHASES = [
-  "Escaneo en cola",
-  "Conectando con Vinted",
-  "Analizando armario",
-  "Calculando precios",
-  "Escaneo completado",
+type Scraped = { id: number; title: string; brand: string; price: number; status: "nuevo" | "stock" | "vendido" };
+
+const POOL: Omit<Scraped, "id">[] = [
+  { title: "Bolso Longchamp azul marino L", brand: "Longchamp", price: 60, status: "stock" },
+  { title: "Camiseta Stüssy World Tour", brand: "Stüssy", price: 32, status: "nuevo" },
+  { title: "Zapatillas Nike Air Max 90", brand: "Nike", price: 78, status: "stock" },
+  { title: "Sudadera Champion Vintage", brand: "Champion", price: 45, status: "vendido" },
+  { title: "Vaquero Levi's 501", brand: "Levi's", price: 38, status: "stock" },
+  { title: "North Face 700 Puffer", brand: "North Face", price: 120, status: "nuevo" },
+  { title: "Adidas Samba OG talla 42", brand: "Adidas", price: 85, status: "stock" },
+  { title: "Carhartt Detroit Jacket", brand: "Carhartt", price: 110, status: "stock" },
+  { title: "Bolso Coach Pochette", brand: "Coach", price: 55, status: "nuevo" },
+  { title: "Nike Tech Fleece negro", brand: "Nike", price: 48, status: "vendido" },
 ];
 
 function Page() {
-  const [profile, setProfile] = useState("https://www.vinted.es/member/23269862");
+  const [url, setUrl] = useState("https://www.vinted.es/member/23269862");
+  const [running, setRunning] = useState(false);
+  const [items, setItems] = useState<Scraped[]>([]);
   const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState(2);
-  const [scanned, setScanned] = useState(0);
+
+  function start() {
+    setItems([]);
+    setRunning(true);
+    setProgress(0);
+  }
 
   useEffect(() => {
+    if (!running) return;
+    let i = 0;
     const id = setInterval(() => {
-      setProgress((p) => {
-        const next = Math.min(100, p + 1.5);
-        setScanned(Math.floor((next / 100) * 76));
-        if (next < 25) setPhase(1);
-        else if (next < 80) setPhase(2);
-        else if (next < 100) setPhase(3);
-        else setPhase(4);
-        return next >= 100 ? 0 : next;
-      });
-    }, 220);
+      const item = POOL[i % POOL.length];
+      setItems((p) => [{ ...item, id: Date.now() + i }, ...p].slice(0, 30));
+      setProgress(Math.min(100, (i + 1) * 10));
+      i++;
+      if (i >= POOL.length) { clearInterval(id); setRunning(false); }
+    }, 600);
     return () => clearInterval(id);
-  }, []);
+  }, [running]);
 
   return (
     <div className="space-y-6">
-      <PageHeader kicker="Bot premium · 24/7" title="Ghost Monitor"
-        subtitle="Agente autónomo que detecta ventas y nuevos productos en tu armario de Vinted." />
+      <PageHeader kicker="Bot premium · 24/7" title="Monitor Fantasma"
+        subtitle="Pega un enlace de Vinted y observa cómo aparecen los productos en tiempo real." />
 
-      {/* Profile config */}
       <section className="rounded-lg border border-border/60 bg-card/40 p-5">
-        <h2 className="font-mono text-xs uppercase tracking-[0.22em] text-foreground">Configuración del armario</h2>
-        <label className="mt-3 block">
-          <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">ID numérico o URL del perfil</span>
+        <label className="block">
+          <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">URL del armario o búsqueda</span>
           <div className="flex gap-2">
-            <input value={profile} onChange={(e) => setProfile(e.target.value)}
-              className="flex-1 rounded-md border border-border bg-background/60 px-3 py-2.5 font-mono text-sm text-foreground outline-none focus:border-signal focus:shadow-[0_0_0_3px_oklch(0.86_0.2_142_/_0.15)]" />
-            <button className="rounded-md bg-signal px-4 py-2 font-mono text-xs font-bold uppercase tracking-[0.22em] text-signal-foreground hover:shadow-[0_0_24px_-4px_var(--signal)]">
-              <CheckCircle2 className="h-4 w-4" />
+            <div className="flex flex-1 items-center gap-2 rounded-md border border-border bg-background/60 px-3">
+              <LinkIcon className="h-3.5 w-3.5 text-muted-foreground" />
+              <input value={url} onChange={(e) => setUrl(e.target.value)}
+                className="flex-1 bg-transparent py-2.5 font-mono text-sm text-foreground outline-none" />
+            </div>
+            <button onClick={start} disabled={running}
+              className="inline-flex items-center gap-2 rounded-md bg-signal px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.22em] text-signal-foreground hover:shadow-[0_0_24px_-4px_var(--signal)] disabled:opacity-50">
+              <Play className="h-3.5 w-3.5" /> {running ? "Escaneando…" : "Iniciar escaneo"}
             </button>
           </div>
         </label>
-      </section>
 
-      {/* Live status */}
-      <section className="overflow-hidden rounded-lg border border-signal/30 bg-signal/5 p-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Ghost className="h-5 w-5 text-signal animate-pulse" />
-            <p className="font-mono text-sm font-bold uppercase tracking-[0.18em] text-signal">{PHASES[phase]}</p>
+        <div className="mt-4 flex items-center gap-3">
+          <Ghost className={`h-4 w-4 ${running ? "text-signal animate-bounce" : "text-muted-foreground"}`} />
+          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-card">
+            <div className="h-full rounded-full bg-gradient-to-r from-signal to-signal/40 transition-[width] duration-300"
+              style={{ width: `${progress}%` }} />
           </div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-            {scanned} / 76 productos
-          </p>
-        </div>
-
-        <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-card">
-          <div className="h-full rounded-full bg-gradient-to-r from-signal to-signal/40 transition-[width] duration-200 ease-linear"
-            style={{ width: `${progress}%` }} />
-        </div>
-
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Stat label="Monitorizados" value="76" />
-          <Stat label="En stock" value="75" />
-          <Stat label="Ventas detectadas" value="1" tone="signal" />
-          <Stat label="Próximo escaneo" value="~14 min" />
-        </div>
-
-        <div className="mt-4 flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-          <Chip>LIVE · actualiza cada 20s</Chip>
-          <Chip>Bot · armario cada 15-45 min</Chip>
-          <Chip tone="signal">Precios publicados 76/76</Chip>
-          <Chip tone="warn">Costes 1/76</Chip>
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground tabular-nums">{items.length} productos</span>
         </div>
       </section>
 
-      {/* Console */}
-      <section className="rounded-lg border border-border/60 bg-card/40 p-5">
-        <h3 className="mb-3 font-mono text-xs uppercase tracking-[0.22em] text-foreground">Console · stream</h3>
-        <pre className="max-h-64 overflow-y-auto rounded-md border border-border/40 bg-background/60 p-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
-{`[ghost] worker.boot       OK
-[ghost] vinted.session     OK · token=••••
-[ghost] wardrobe.fetch     76 items
-[ghost] wardrobe.diff      +0 new · −0 sold
-[ghost] price.scan         ${scanned}/76
-[ghost] price.publish      ${scanned}/76
-[ghost] cost.complete      1/76  ⚠
-[ghost] next.scheduled     +14m`}
-        </pre>
-        <a href="#" className="mt-3 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-signal hover:underline">
-          Ver logs completos <ExternalLink className="h-3 w-3" />
-        </a>
+      <section>
+        <h2 className="mb-3 font-mono text-xs uppercase tracking-[0.22em] text-foreground">Productos detectados</h2>
+        {items.length === 0 ? (
+          <div className="grid place-items-center rounded-lg border border-dashed border-border/60 bg-card/20 p-12 text-center">
+            <Ghost className="h-10 w-10 text-muted-foreground/40 animate-float" />
+            <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+              {running ? "Conectando con Vinted…" : "Pulsa iniciar para empezar a scrapear"}
+            </p>
+          </div>
+        ) : (
+          <ul className="grid gap-2 sm:grid-cols-2">
+            {items.map((it, i) => (
+              <li key={it.id}
+                className="group flex items-center gap-3 rounded-lg border border-border/60 bg-card/40 p-3 transition-all hover:border-signal/40"
+                style={{ animation: "fade-in 0.4s ease-out both", animationDelay: `${Math.min(i, 10) * 30}ms` }}>
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-signal/10 text-signal">
+                  <Tag className="h-4 w-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-foreground">{it.title}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{it.brand} · €{it.price}</p>
+                </div>
+                <span className={`rounded border px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] ${
+                  it.status === "vendido" ? "border-signal/40 bg-signal/10 text-signal" :
+                  it.status === "nuevo"   ? "border-warn/40 bg-warn/10 text-warn" :
+                                            "border-border bg-card text-muted-foreground"
+                }`}>
+                  {it.status === "vendido" && <CheckCircle2 className="mr-1 inline h-2.5 w-2.5" />}
+                  {it.status}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </div>
-  );
-}
-
-function Stat({ label, value, tone }: { label: string; value: string; tone?: "signal" }) {
-  return (
-    <div className="rounded-md border border-border/60 bg-card/40 p-3">
-      <p className={`font-mono text-2xl font-bold tabular-nums ${tone === "signal" ? "text-signal" : "text-foreground"}`}>{value}</p>
-      <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground">{label}</p>
-    </div>
-  );
-}
-function Chip({ children, tone }: { children: React.ReactNode; tone?: "signal" | "warn" }) {
-  return (
-    <span className={`rounded-full border px-2.5 py-1 ${
-      tone === "signal" ? "border-signal/40 bg-signal/10 text-signal" :
-      tone === "warn"   ? "border-warn/40 bg-warn/10 text-warn" :
-                          "border-border bg-card/60"
-    }`}>{children}</span>
   );
 }

@@ -23,7 +23,6 @@ import { Route as AppLeaderboardRouteImport } from './routes/app.leaderboard'
 import { Route as AppInventarioRouteImport } from './routes/app.inventario'
 import { Route as AppGhostRouteImport } from './routes/app.ghost'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
-import { Route as AppApiDocsRouteImport } from './routes/app.api-docs'
 import { Route as AppAnaliticaRouteImport } from './routes/app.analitica'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 
@@ -97,11 +96,6 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
-const AppApiDocsRoute = AppApiDocsRouteImport.update({
-  id: '/api-docs',
-  path: '/api-docs',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppAnaliticaRoute = AppAnaliticaRouteImport.update({
   id: '/analitica',
   path: '/analitica',
@@ -119,7 +113,6 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/app/admin': typeof AppAdminRoute
   '/app/analitica': typeof AppAnaliticaRoute
-  '/app/api-docs': typeof AppApiDocsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/ghost': typeof AppGhostRoute
   '/app/inventario': typeof AppInventarioRoute
@@ -137,7 +130,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/app/admin': typeof AppAdminRoute
   '/app/analitica': typeof AppAnaliticaRoute
-  '/app/api-docs': typeof AppApiDocsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/ghost': typeof AppGhostRoute
   '/app/inventario': typeof AppInventarioRoute
@@ -157,7 +149,6 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/app/admin': typeof AppAdminRoute
   '/app/analitica': typeof AppAnaliticaRoute
-  '/app/api-docs': typeof AppApiDocsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/ghost': typeof AppGhostRoute
   '/app/inventario': typeof AppInventarioRoute
@@ -178,7 +169,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/app/admin'
     | '/app/analitica'
-    | '/app/api-docs'
     | '/app/dashboard'
     | '/app/ghost'
     | '/app/inventario'
@@ -196,7 +186,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/app/admin'
     | '/app/analitica'
-    | '/app/api-docs'
     | '/app/dashboard'
     | '/app/ghost'
     | '/app/inventario'
@@ -215,7 +204,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/app/admin'
     | '/app/analitica'
-    | '/app/api-docs'
     | '/app/dashboard'
     | '/app/ghost'
     | '/app/inventario'
@@ -335,13 +323,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/api-docs': {
-      id: '/app/api-docs'
-      path: '/api-docs'
-      fullPath: '/app/api-docs'
-      preLoaderRoute: typeof AppApiDocsRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/app/analitica': {
       id: '/app/analitica'
       path: '/analitica'
@@ -362,7 +343,6 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRoute
   AppAnaliticaRoute: typeof AppAnaliticaRoute
-  AppApiDocsRoute: typeof AppApiDocsRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppGhostRoute: typeof AppGhostRoute
   AppInventarioRoute: typeof AppInventarioRoute
@@ -379,7 +359,6 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppAdminRoute: AppAdminRoute,
   AppAnaliticaRoute: AppAnaliticaRoute,
-  AppApiDocsRoute: AppApiDocsRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppGhostRoute: AppGhostRoute,
   AppInventarioRoute: AppInventarioRoute,
