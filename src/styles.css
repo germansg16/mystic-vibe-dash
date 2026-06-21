@@ -229,6 +229,8 @@
 @utility animate-radar-sweep { animation: radar-sweep 4s linear infinite; }
 @utility animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
 @utility animate-marquee-up { animation: marquee-up 25s linear infinite; }
+@keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@utility animate-float { animation: float-y 3.2s ease-in-out infinite; }
 
 .shimmer-text {
   background: linear-gradient(90deg, oklch(0.7 0.005 250) 0%, oklch(1 0 0) 50%, oklch(0.7 0.005 250) 100%);
