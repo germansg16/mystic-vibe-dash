@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   LayoutDashboard, PackagePlus, Receipt, Boxes, BarChart3, Radar,
   Trophy, Crown, MessageSquare, FlaskConical, Ghost, Code2, Shield,
-  LogOut, Menu, Sparkles, ChevronsLeft, ChevronsRight,
+  LogOut, Menu, Sparkles,
 } from "lucide-react";
 
 import { AlphaLogo } from "@/components/alpha-logo";
