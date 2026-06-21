@@ -2,7 +2,7 @@ import { Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-route
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   LayoutDashboard, PackagePlus, Receipt, Boxes, BarChart3, Radar,
-  Trophy, Crown, MessageSquare, FlaskConical, Ghost, Code2, Shield,
+  Trophy, Crown, MessageSquare, FlaskConical, Ghost, Shield,
   LogOut, Menu, Sparkles,
 } from "lucide-react";
 
@@ -26,12 +26,11 @@ const NAV: NavItem[] = [
   { to: "/app/inventario",  label: "Inventario",    icon: Boxes,           group: "Operación" },
   { to: "/app/analitica",   label: "Analítica",     icon: BarChart3,       group: "Inteligencia" },
   { to: "/app/radar",       label: "Market Radar",  icon: Radar,           group: "Inteligencia", premium: true },
-  { to: "/app/winners",     label: "Winners",       icon: Trophy,          group: "Inteligencia", premium: true },
-  { to: "/app/ghost",       label: "Ghost Monitor", icon: Ghost,           group: "Inteligencia", premium: true },
+  { to: "/app/winners",     label: "Ganadores",     icon: Trophy,          group: "Inteligencia", premium: true },
+  { to: "/app/ghost",       label: "Monitor Fantasma", icon: Ghost,        group: "Inteligencia", premium: true },
   { to: "/app/leaderboard", label: "Leaderboard",   icon: Crown,           group: "Comunidad" },
-  { to: "/app/qa",          label: "Alpha Oracle",  icon: MessageSquare,   group: "Comunidad" },
-  { to: "/app/stealth",     label: "Stealth Lab",   icon: FlaskConical,    group: "Sistema", premium: true },
-  { to: "/app/api-docs",    label: "API Docs",      icon: Code2,           group: "Sistema" },
+  { to: "/app/qa",          label: "Oráculo Alpha", icon: MessageSquare,   group: "Comunidad" },
+  { to: "/app/stealth",     label: "Laboratorio",   icon: FlaskConical,    group: "Sistema", premium: true },
   { to: "/app/admin",       label: "Admin",         icon: Shield,          group: "Sistema", adminOnly: true },
 ];
 
@@ -97,7 +96,7 @@ export function AppShell() {
         )}
       >
         <div className={cn("h-full w-[240px] transition-opacity duration-200", collapsed && "opacity-0")}>
-          <SidebarContent items={items} pathname={pathname} collapsed={false} />
+          <SidebarContent items={items} pathname={pathname} onNavigate={() => {}} />
         </div>
       </aside>
 
@@ -112,7 +111,6 @@ export function AppShell() {
             <SidebarContent
               items={items}
               pathname={pathname}
-              collapsed={false}
               onNavigate={() => setMobileOpen(false)}
             />
           </aside>
@@ -122,7 +120,6 @@ export function AppShell() {
       {/* Main */}
       <div className="relative z-10 flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border/50 bg-background/70 px-4 py-3 backdrop-blur-xl sm:px-6">
-          {/* Universal menu toggle */}
           <button
             className="group flex items-center gap-2 rounded-md border border-border/60 bg-card/40 px-2.5 py-1.5 text-muted-foreground transition-all hover:border-signal/40 hover:text-signal"
             onClick={() => {
@@ -184,11 +181,10 @@ export function AppShell() {
 
 
 function SidebarContent({
-  items, pathname, collapsed, onNavigate,
+  items, pathname, onNavigate,
 }: {
   items: NavItem[];
   pathname: string;
-  collapsed: boolean;
   onNavigate?: () => void;
 }) {
   const grouped = useMemo(() => {
@@ -200,31 +196,24 @@ function SidebarContent({
 
   return (
     <div className="flex h-full flex-col">
-      <div className={cn(
-        "flex items-center gap-3 border-b border-border/50 px-4 py-5",
-        collapsed && "justify-center px-2"
-      )}>
-        <AlphaLogo size={collapsed ? 30 : 34} mode="flicker" />
-        {!collapsed && (
-          <div className="flex min-w-0 flex-col leading-tight">
-            <span className="font-mono text-sm font-bold tracking-[0.18em] text-signal">
-              ALPHA
-            </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground">
-              Engine · v7.8
-            </span>
-          </div>
-        )}
+      <div className="flex items-center gap-3 border-b border-border/50 px-4 py-5">
+        <AlphaLogo size={34} mode="flicker" />
+        <div className="flex min-w-0 flex-col leading-tight">
+          <span className="font-mono text-sm font-bold tracking-[0.18em] text-signal">
+            ALPHA
+          </span>
+          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground">
+            Engine · v7.8
+          </span>
+        </div>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-2 py-3">
         {grouped.map(([group, list], gi) => (
           <div key={group} className={cn(gi > 0 && "mt-4")}>
-            {!collapsed && (
-              <p className="px-3 pb-1.5 font-mono text-[9px] uppercase tracking-[0.28em] text-muted-foreground/60">
-                {group}
-              </p>
-            )}
+            <p className="px-3 pb-1.5 font-mono text-[9px] uppercase tracking-[0.28em] text-muted-foreground/60">
+              {group}
+            </p>
             <div className="space-y-0.5">
               {list.map((it, idx) => {
                 const active = pathname === it.to;
@@ -234,10 +223,8 @@ function SidebarContent({
                     key={it.to}
                     to={it.to}
                     onClick={onNavigate}
-                    title={collapsed ? it.label : undefined}
                     className={cn(
                       "group relative flex items-center gap-3 overflow-hidden rounded-md px-2.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] transition-all duration-300 nav-item",
-                      collapsed && "justify-center px-2",
                       active
                         ? "bg-signal/10 text-signal"
                         : "text-muted-foreground hover:bg-accent/30 hover:text-foreground"
@@ -248,8 +235,8 @@ function SidebarContent({
                       <span aria-hidden className="absolute inset-y-1 left-0 w-[2px] rounded-r bg-signal shadow-[0_0_8px_var(--signal)]" />
                     )}
                     <Icon className="h-4 w-4 shrink-0" />
-                    {!collapsed && <span className="flex-1 truncate">{it.label}</span>}
-                    {!collapsed && it.premium && (
+                    <span className="flex-1 truncate">{it.label}</span>
+                    {it.premium && (
                       <span className={cn(
                         "rounded-sm px-1 py-px font-mono text-[8px] tracking-[0.18em]",
                         active ? "bg-signal/15 text-signal" : "bg-warn/10 text-warn/80"
