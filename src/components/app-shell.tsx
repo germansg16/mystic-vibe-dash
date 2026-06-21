@@ -184,13 +184,12 @@ export function AppShell() {
 
 
 function SidebarContent({
-  items, pathname, collapsed, onNavigate, onToggle,
+  items, pathname, collapsed, onNavigate,
 }: {
   items: NavItem[];
   pathname: string;
   collapsed: boolean;
   onNavigate?: () => void;
-  onToggle?: () => void;
 }) {
   const grouped = useMemo(() => {
     const map = new Map<NavItem["group"], NavItem[]>();
