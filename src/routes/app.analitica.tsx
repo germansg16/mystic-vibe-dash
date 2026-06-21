@@ -172,14 +172,14 @@ function Heatmap() {
         <div />
         {hours.map((h) => <div key={h} className="text-center font-mono text-[9px] text-muted-foreground">{h}h</div>)}
         {days.map((d, di) => (
-          <>
-            <div key={d} className="pr-2 text-right font-mono text-[10px] text-muted-foreground">{d}</div>
+          <Fragment key={d}>
+            <div className="pr-2 text-right font-mono text-[10px] text-muted-foreground">{d}</div>
             {hours.map((h) => {
               const val = v(di, h);
               return <div key={`${d}-${h}`} className="aspect-square min-w-[18px] rounded-[3px] transition-transform hover:scale-110"
                 style={{ background: `oklch(0.86 0.2 142 / ${0.06 + val * 0.5})` }} title={`${d} ${h}h · ${(val * 100).toFixed(0)}%`} />;
             })}
-          </>
+          </Fragment>
         ))}
       </div>
     </div>
