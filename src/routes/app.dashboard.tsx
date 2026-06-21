@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   TrendingUp, Package, ShoppingBag, Wallet,
   AlertTriangle, Activity, CheckCircle2, ArrowUpRight,
+  Tag, Truck, Sparkles,
 } from "lucide-react";
 import { PageHeader } from "@/components/app-shell";
 
@@ -33,6 +34,11 @@ function Dashboard() {
         title="Dashboard"
         subtitle="Lo esencial de tu negocio en Vinted, sin ruido."
       />
+
+      {/* Creative hero — reselling pipeline */}
+      <ResellingHero />
+
+
 
       {/* KPIs */}
       <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -129,5 +135,119 @@ function Dashboard() {
         </aside>
       </section>
     </div>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Reselling Hero — animated visual showing the resell pipeline:
+   sourcing → listing → shipping → profit. Pure SVG/CSS, no deps.
+--------------------------------------------------------------------------- */
+function ResellingHero() {
+  return (
+    <section className="relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-card/60 via-card/30 to-background p-6 sm:p-8">
+      {/* subtle grid backdrop */}
+      <div
+        aria-hidden
+        className="absolute inset-0 opacity-[0.08]"
+        style={{
+          backgroundImage:
+            "linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
+      {/* signal glow */}
+      <div aria-hidden className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-signal/15 blur-3xl" />
+      <div aria-hidden className="absolute -left-20 bottom-0 h-56 w-56 rounded-full bg-signal/[0.06] blur-3xl" />
+
+      <div className="relative grid gap-6 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+        {/* Left — message */}
+        <div>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-signal/30 bg-signal/5 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-signal">
+            <Sparkles className="h-3 w-3" /> Pipeline activo
+          </span>
+          <h2 className="mt-4 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            De armario a venta,
+            <span className="block bg-gradient-to-r from-signal to-foreground bg-clip-text text-transparent">
+              en segundos.
+            </span>
+          </h2>
+          <p className="mt-3 max-w-md text-sm text-muted-foreground">
+            Monitorizamos tu Vinted, detectamos oportunidades y calculamos cada ROI
+            en tiempo real. Tú solo decides qué publicar.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <Link
+              to="/app/oracle"
+              className="group inline-flex items-center gap-2 rounded-full bg-signal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-signal-foreground transition-all hover:shadow-[0_0_24px_-4px_var(--signal)]"
+            >
+              Registrar producto
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </Link>
+            <Link
+              to="/app/ghost"
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-signal/40 hover:text-foreground"
+            >
+              <span className="relative grid h-2 w-2 place-items-center">
+                <span className="absolute inset-0 rounded-full bg-signal animate-pulse-dot" />
+                <span className="h-2 w-2 rounded-full bg-signal" />
+              </span>
+              Ghost Monitor
+            </Link>
+          </div>
+        </div>
+
+        {/* Right — pipeline animation */}
+        <div className="relative h-[200px] sm:h-[220px]">
+          {/* orbital ring */}
+          <div className="absolute inset-0 grid place-items-center">
+            <div className="relative h-[180px] w-[180px]">
+              <div className="absolute inset-0 rounded-full border border-signal/20" />
+              <div className="absolute inset-4 rounded-full border border-signal/10" />
+              <div className="absolute inset-0 rounded-full border-t-2 border-signal/60 animate-radar-sweep" />
+              {/* center */}
+              <div className="absolute inset-0 grid place-items-center">
+                <div className="grid h-14 w-14 place-items-center rounded-full border border-signal/40 bg-card/80 backdrop-blur shadow-[0_0_30px_-4px_var(--signal)]">
+                  <span className="font-mono text-sm font-bold text-signal">α</span>
+                </div>
+              </div>
+              {/* orbiting chips */}
+              {[
+                { icon: Tag,     deg: 0,   tone: "signal" as const, label: "€42" },
+                { icon: Package, deg: 120, tone: "muted"  as const, label: "Nike" },
+                { icon: Truck,   deg: 240, tone: "signal" as const, label: "Ship" },
+              ].map((it, i) => {
+                const Icon = it.icon;
+                return (
+                  <div
+                    key={i}
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                    style={{
+                      transform: `translate(-50%,-50%) rotate(${it.deg}deg) translateX(90px) rotate(-${it.deg}deg)`,
+                      animation: `orbit 16s linear infinite`,
+                      animationDelay: `${-i * 5.3}s`,
+                      // @ts-expect-error css var
+                      "--orbit-r": "90px",
+                    }}
+                  >
+                    <div className={`flex items-center gap-1.5 rounded-full border px-2 py-1 backdrop-blur ${
+                      it.tone === "signal"
+                        ? "border-signal/40 bg-signal/10 text-signal"
+                        : "border-border/60 bg-card/70 text-muted-foreground"
+                    }`}>
+                      <Icon className="h-3 w-3" />
+                      <span className="font-mono text-[10px] uppercase tracking-[0.18em]">{it.label}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* floating ping rings */}
+          <span aria-hidden className="absolute right-6 top-6 h-3 w-3 rounded-full border border-signal/60" style={{ animation: "ping-ring 2.4s ease-out infinite" }} />
+          <span aria-hidden className="absolute left-4 bottom-6 h-2 w-2 rounded-full border border-signal/60" style={{ animation: "ping-ring 3.2s ease-out infinite", animationDelay: "0.8s" }} />
+        </div>
+      </div>
+    </section>
   );
 }
