@@ -266,22 +266,6 @@ function SidebarContent({
         ))}
       </nav>
 
-      {onToggle && (
-        <div className="border-t border-border/50 p-2">
-          <button
-            onClick={onToggle}
-            className="flex w-full items-center justify-center gap-2 rounded-md px-2 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:bg-accent/30 hover:text-foreground"
-            title={collapsed ? "Expandir" : "Colapsar"}
-          >
-            {collapsed ? <ChevronsRight className="h-3.5 w-3.5" /> : (
-              <>
-                <ChevronsLeft className="h-3.5 w-3.5" />
-                <span>Colapsar</span>
-              </>
-            )}
-          </button>
-        </div>
-      )}
     </div>
   );
 }
