@@ -73,20 +73,32 @@ export function AppShell() {
   const items = NAV.filter((n) => !n.adminOnly || user.role === "admin");
 
   return (
-    <div className="flex min-h-screen w-full bg-background text-foreground">
+    <div className="relative flex min-h-screen w-full bg-background text-foreground">
+      {/* Ambient layer */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.16]"
+          style={{
+            backgroundImage:
+              "linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+            maskImage: "radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%)",
+            WebkitMaskImage: "radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%)",
+          }}
+        />
+        <div className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-signal/[0.08] blur-[120px]" />
+      </div>
+
       {/* Sidebar — desktop */}
       <aside
         className={cn(
-          "sticky top-0 hidden h-screen shrink-0 flex-col border-r border-border/50 bg-card/20 backdrop-blur-xl transition-[width] duration-300 ease-out lg:flex",
-          collapsed ? "w-[72px]" : "w-[240px]"
+          "sticky top-0 z-20 hidden h-screen shrink-0 flex-col overflow-hidden border-r border-border/50 bg-card/30 backdrop-blur-xl transition-[width] duration-300 ease-out lg:flex",
+          collapsed ? "w-0 border-r-0" : "w-[240px]"
         )}
       >
-        <SidebarContent
-          items={items}
-          pathname={pathname}
-          collapsed={collapsed}
-          onToggle={() => setCollapsed((c) => !c)}
-        />
+        <div className={cn("h-full w-[240px] transition-opacity duration-200", collapsed && "opacity-0")}>
+          <SidebarContent items={items} pathname={pathname} collapsed={false} />
+        </div>
       </aside>
 
       {/* Sidebar — mobile drawer */}
@@ -108,14 +120,25 @@ export function AppShell() {
       )}
 
       {/* Main */}
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="relative z-10 flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border/50 bg-background/70 px-4 py-3 backdrop-blur-xl sm:px-6">
+          {/* Universal menu toggle */}
           <button
-            className="rounded-md border border-border/60 p-2 text-muted-foreground hover:text-foreground lg:hidden"
-            onClick={() => setMobileOpen(true)}
-            aria-label="Abrir menú"
+            className="group flex items-center gap-2 rounded-md border border-border/60 bg-card/40 px-2.5 py-1.5 text-muted-foreground transition-all hover:border-signal/40 hover:text-signal"
+            onClick={() => {
+              if (typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches) {
+                setCollapsed((c) => !c);
+              } else {
+                setMobileOpen(true);
+              }
+            }}
+            aria-label="Alternar menú"
+            title="Alternar menú"
           >
-            <Menu className="h-4 w-4" />
+            <Menu className="h-4 w-4 transition-transform group-hover:scale-110" />
+            <span className="hidden font-mono text-[10px] uppercase tracking-[0.22em] sm:inline">
+              Menú
+            </span>
           </button>
 
           <div className="flex min-w-0 flex-1 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
@@ -149,7 +172,7 @@ export function AppShell() {
           </div>
         </header>
 
-        <main key={pathname} className="flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-8 page-enter">
+        <main key={pathname} className="relative flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-8 page-enter">
           <div className="mx-auto w-full max-w-6xl">
             <Outlet />
           </div>
@@ -158,6 +181,7 @@ export function AppShell() {
     </div>
   );
 }
+
 
 function SidebarContent({
   items, pathname, collapsed, onNavigate, onToggle,
