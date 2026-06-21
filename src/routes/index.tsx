@@ -152,13 +152,13 @@ function Nav() {
           <a href="#pricing"   className="hover:text-foreground transition-colors">Planes</a>
         </nav>
         <div className="flex items-center gap-2">
-          <button className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/auth" className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
             Iniciar sesión
-          </button>
-          <button className="group inline-flex items-center gap-1.5 rounded-md bg-signal px-4 py-2 text-sm font-medium text-signal-foreground signal-glow hover:brightness-110 transition">
+          </Link>
+          <Link to="/auth" className="group inline-flex items-center gap-1.5 rounded-md bg-signal px-4 py-2 text-sm font-medium text-signal-foreground signal-glow hover:brightness-110 transition">
             Acceder
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </button>
+          </Link>
         </div>
       </div>
     </header>

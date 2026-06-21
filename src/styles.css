@@ -80,7 +80,11 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
+  * {
+    border-color: var(--color-border);
+    /* Smoother default transitions everywhere */
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
   html { scroll-behavior: smooth; }
   body {
     background-color: var(--color-background);
@@ -96,6 +100,20 @@
   }
   ::selection { background: oklch(0.86 0.2 142 / 0.3); color: var(--color-foreground); }
 }
+
+/* Page enter animation — fluid */
+@keyframes page-enter {
+  0%   { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.page-enter { animation: page-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Nav item stagger */
+@keyframes nav-in {
+  0% { opacity: 0; transform: translateX(-6px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.nav-item { animation: nav-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
 @utility font-mono { font-family: var(--font-mono); font-feature-settings: "ss01", "ss02", "zero"; }
 @utility text-balance { text-wrap: balance; }

@@ -9,38 +9,248 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppWinnersRouteImport } from './routes/app.winners'
+import { Route as AppVentaRouteImport } from './routes/app.venta'
+import { Route as AppStealthRouteImport } from './routes/app.stealth'
+import { Route as AppRadarRouteImport } from './routes/app.radar'
+import { Route as AppQaRouteImport } from './routes/app.qa'
+import { Route as AppOracleRouteImport } from './routes/app.oracle'
+import { Route as AppLeaderboardRouteImport } from './routes/app.leaderboard'
+import { Route as AppInventarioRouteImport } from './routes/app.inventario'
+import { Route as AppGhostRouteImport } from './routes/app.ghost'
+import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppApiDocsRouteImport } from './routes/app.api-docs'
+import { Route as AppAnaliticaRouteImport } from './routes/app.analitica'
+import { Route as AppAdminRouteImport } from './routes/app.admin'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWinnersRoute = AppWinnersRouteImport.update({
+  id: '/winners',
+  path: '/winners',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppVentaRoute = AppVentaRouteImport.update({
+  id: '/venta',
+  path: '/venta',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppStealthRoute = AppStealthRouteImport.update({
+  id: '/stealth',
+  path: '/stealth',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRadarRoute = AppRadarRouteImport.update({
+  id: '/radar',
+  path: '/radar',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppQaRoute = AppQaRouteImport.update({
+  id: '/qa',
+  path: '/qa',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOracleRoute = AppOracleRouteImport.update({
+  id: '/oracle',
+  path: '/oracle',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLeaderboardRoute = AppLeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInventarioRoute = AppInventarioRouteImport.update({
+  id: '/inventario',
+  path: '/inventario',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGhostRoute = AppGhostRouteImport.update({
+  id: '/ghost',
+  path: '/ghost',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppApiDocsRoute = AppApiDocsRouteImport.update({
+  id: '/api-docs',
+  path: '/api-docs',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAnaliticaRoute = AppAnaliticaRouteImport.update({
+  id: '/analitica',
+  path: '/analitica',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/analitica': typeof AppAnaliticaRoute
+  '/app/api-docs': typeof AppApiDocsRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/ghost': typeof AppGhostRoute
+  '/app/inventario': typeof AppInventarioRoute
+  '/app/leaderboard': typeof AppLeaderboardRoute
+  '/app/oracle': typeof AppOracleRoute
+  '/app/qa': typeof AppQaRoute
+  '/app/radar': typeof AppRadarRoute
+  '/app/stealth': typeof AppStealthRoute
+  '/app/venta': typeof AppVentaRoute
+  '/app/winners': typeof AppWinnersRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/analitica': typeof AppAnaliticaRoute
+  '/app/api-docs': typeof AppApiDocsRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/ghost': typeof AppGhostRoute
+  '/app/inventario': typeof AppInventarioRoute
+  '/app/leaderboard': typeof AppLeaderboardRoute
+  '/app/oracle': typeof AppOracleRoute
+  '/app/qa': typeof AppQaRoute
+  '/app/radar': typeof AppRadarRoute
+  '/app/stealth': typeof AppStealthRoute
+  '/app/venta': typeof AppVentaRoute
+  '/app/winners': typeof AppWinnersRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/analitica': typeof AppAnaliticaRoute
+  '/app/api-docs': typeof AppApiDocsRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/ghost': typeof AppGhostRoute
+  '/app/inventario': typeof AppInventarioRoute
+  '/app/leaderboard': typeof AppLeaderboardRoute
+  '/app/oracle': typeof AppOracleRoute
+  '/app/qa': typeof AppQaRoute
+  '/app/radar': typeof AppRadarRoute
+  '/app/stealth': typeof AppStealthRoute
+  '/app/venta': typeof AppVentaRoute
+  '/app/winners': typeof AppWinnersRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/auth'
+    | '/app/admin'
+    | '/app/analitica'
+    | '/app/api-docs'
+    | '/app/dashboard'
+    | '/app/ghost'
+    | '/app/inventario'
+    | '/app/leaderboard'
+    | '/app/oracle'
+    | '/app/qa'
+    | '/app/radar'
+    | '/app/stealth'
+    | '/app/venta'
+    | '/app/winners'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/app/admin'
+    | '/app/analitica'
+    | '/app/api-docs'
+    | '/app/dashboard'
+    | '/app/ghost'
+    | '/app/inventario'
+    | '/app/leaderboard'
+    | '/app/oracle'
+    | '/app/qa'
+    | '/app/radar'
+    | '/app/stealth'
+    | '/app/venta'
+    | '/app/winners'
+    | '/app'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/auth'
+    | '/app/admin'
+    | '/app/analitica'
+    | '/app/api-docs'
+    | '/app/dashboard'
+    | '/app/ghost'
+    | '/app/inventario'
+    | '/app/leaderboard'
+    | '/app/oracle'
+    | '/app/qa'
+    | '/app/radar'
+    | '/app/stealth'
+    | '/app/venta'
+    | '/app/winners'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +258,147 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/winners': {
+      id: '/app/winners'
+      path: '/winners'
+      fullPath: '/app/winners'
+      preLoaderRoute: typeof AppWinnersRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/venta': {
+      id: '/app/venta'
+      path: '/venta'
+      fullPath: '/app/venta'
+      preLoaderRoute: typeof AppVentaRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/stealth': {
+      id: '/app/stealth'
+      path: '/stealth'
+      fullPath: '/app/stealth'
+      preLoaderRoute: typeof AppStealthRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/radar': {
+      id: '/app/radar'
+      path: '/radar'
+      fullPath: '/app/radar'
+      preLoaderRoute: typeof AppRadarRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/qa': {
+      id: '/app/qa'
+      path: '/qa'
+      fullPath: '/app/qa'
+      preLoaderRoute: typeof AppQaRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/oracle': {
+      id: '/app/oracle'
+      path: '/oracle'
+      fullPath: '/app/oracle'
+      preLoaderRoute: typeof AppOracleRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/leaderboard': {
+      id: '/app/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/app/leaderboard'
+      preLoaderRoute: typeof AppLeaderboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/inventario': {
+      id: '/app/inventario'
+      path: '/inventario'
+      fullPath: '/app/inventario'
+      preLoaderRoute: typeof AppInventarioRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/ghost': {
+      id: '/app/ghost'
+      path: '/ghost'
+      fullPath: '/app/ghost'
+      preLoaderRoute: typeof AppGhostRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/dashboard': {
+      id: '/app/dashboard'
+      path: '/dashboard'
+      fullPath: '/app/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/api-docs': {
+      id: '/app/api-docs'
+      path: '/api-docs'
+      fullPath: '/app/api-docs'
+      preLoaderRoute: typeof AppApiDocsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/analitica': {
+      id: '/app/analitica'
+      path: '/analitica'
+      fullPath: '/app/analitica'
+      preLoaderRoute: typeof AppAnaliticaRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/admin': {
+      id: '/app/admin'
+      path: '/admin'
+      fullPath: '/app/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
+  AppAnaliticaRoute: typeof AppAnaliticaRoute
+  AppApiDocsRoute: typeof AppApiDocsRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppGhostRoute: typeof AppGhostRoute
+  AppInventarioRoute: typeof AppInventarioRoute
+  AppLeaderboardRoute: typeof AppLeaderboardRoute
+  AppOracleRoute: typeof AppOracleRoute
+  AppQaRoute: typeof AppQaRoute
+  AppRadarRoute: typeof AppRadarRoute
+  AppStealthRoute: typeof AppStealthRoute
+  AppVentaRoute: typeof AppVentaRoute
+  AppWinnersRoute: typeof AppWinnersRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
+  AppAnaliticaRoute: AppAnaliticaRoute,
+  AppApiDocsRoute: AppApiDocsRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppGhostRoute: AppGhostRoute,
+  AppInventarioRoute: AppInventarioRoute,
+  AppLeaderboardRoute: AppLeaderboardRoute,
+  AppOracleRoute: AppOracleRoute,
+  AppQaRoute: AppQaRoute,
+  AppRadarRoute: AppRadarRoute,
+  AppStealthRoute: AppStealthRoute,
+  AppVentaRoute: AppVentaRoute,
+  AppWinnersRoute: AppWinnersRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
