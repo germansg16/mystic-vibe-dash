@@ -35,6 +35,11 @@ function Dashboard() {
         subtitle="Lo esencial de tu negocio en Vinted, sin ruido."
       />
 
+      {/* Creative hero — reselling pipeline */}
+      <ResellingHero />
+
+
+
       {/* KPIs */}
       <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {PRIMARY.map((k, i) => {
