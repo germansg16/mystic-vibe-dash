@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ExternalLink, Pencil, Trash2, Filter, X, Save } from "lucide-react";
 import { PageHeader } from "@/components/app-shell";
 
@@ -171,8 +171,6 @@ function IconBtn({ children, title, href, tone, onClick }:
       ? "text-muted-foreground hover:border-destructive/40 hover:bg-destructive/10 hover:text-destructive"
       : "text-muted-foreground hover:border-border hover:bg-background hover:text-foreground"
   }`;
-  // suppress unused var
-  void useMemo;
   return href
     ? <a href={href} title={title} className={cls}>{children}</a>
     : <button title={title} onClick={onClick} className={cls}>{children}</button>;
