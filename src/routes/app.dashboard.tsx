@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   TrendingUp, Package, ShoppingBag, Wallet,
   AlertTriangle, Activity, CheckCircle2, ArrowUpRight,
+  Tag, Truck, Sparkles,
 } from "lucide-react";
 import { PageHeader } from "@/components/app-shell";
 
